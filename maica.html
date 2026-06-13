@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>A Tribute to You</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--primary-pink:#d63384;--light-pink:#f8d5e4;--pale-pink:#fef3f7;--dark-gray:#2c2c2c;--medium-gray:#666666;--light-gray:#f5f5f5;--white:#ffffff;--accent-dark:#9b2d6b}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--white);color:var(--dark-gray);line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;background:rgba(255,255,255,0.98);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(214,51,132,0.1);padding:1rem 0;z-index:999}
+.nav-container{max-width:1000px;margin:0 auto;padding:0 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:var(--primary-pink);letter-spacing:1px;white-space:nowrap}
+.nav-links{display:flex;gap:1.25rem;list-style:none;flex-wrap:nowrap}
+.nav-links a{text-decoration:none;color:var(--dark-gray);font-size:.85rem;font-weight:500;position:relative;transition:color .3s ease;white-space:nowrap;padding:.25rem 0}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--primary-pink);transition:width .3s ease}
+.nav-links a:hover{color:var(--primary-pink)}
+.nav-links a:hover::after{width:100%}
+
+/* ── HERO ── */
+.hero{margin-top:60px;min-height:calc(100vh - 60px);background:linear-gradient(135deg,var(--pale-pink) 0%,var(--white) 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:3rem 1.5rem;position:relative}
+.hero-heart{font-size:4rem;margin-bottom:1.5rem;animation:float 3s ease-in-out infinite;line-height:1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,4rem);font-weight:700;color:var(--dark-gray);margin-bottom:1rem;letter-spacing:-1px;line-height:1.2}
+.hero p{font-size:clamp(.95rem,2.5vw,1.3rem);color:var(--medium-gray);margin-bottom:2rem;max-width:560px;font-weight:300;line-height:1.8}
+.scroll-indicator{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:1.2rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+
+/* ── CONTAINER ── */
+.container{max-width:1000px;margin:0 auto;padding:0 1.25rem}
+
+/* ── TABS ── */
+.tabs-container{display:flex;gap:.75rem;justify-content:center;margin:3.5rem 0 2.5rem;flex-wrap:wrap;padding:0 .5rem}
+.tab-button{padding:.65rem 1.4rem;border:2px solid var(--primary-pink);background:transparent;color:var(--primary-pink);border-radius:50px;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .3s ease;font-family:'Inter',sans-serif;touch-action:manipulation;min-height:44px}
+.tab-button:hover{background:var(--pale-pink)}
+.tab-button.active{background:var(--primary-pink);color:var(--white)}
+
+/* ── SECTIONS ── */
+.content-section{margin:3rem 0;display:none;animation:fadeIn .5s ease}
+.content-section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.5rem);color:var(--dark-gray);margin-bottom:.5rem;text-align:center;line-height:1.3}
+.section-subtitle{text-align:center;color:var(--medium-gray);margin-bottom:2.5rem;font-size:1rem;font-weight:300}
+
+/* ── GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem}
+.gallery-item{aspect-ratio:1;background:linear-gradient(135deg,var(--light-pink) 0%,var(--pale-pink) 100%);border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:3rem;transition:all .3s ease;box-shadow:0 3px 10px rgba(214,51,132,.1);border:1px solid rgba(214,51,132,.2);overflow:hidden;position:relative;touch-action:manipulation}
+.gallery-item:active{transform:scale(.96)}
+@media(hover:hover){.gallery-item:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 10px 25px rgba(214,51,132,.2)}}
+
+/* ── MUSIC ── */
+.music-grid{display:grid;gap:1rem;margin-bottom:1.5rem}
+.music-card{display:flex;align-items:center;gap:1.25rem;padding:1.25rem 1.25rem;background:var(--light-gray);border-radius:12px;border:1px solid rgba(214,51,132,.15);cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;touch-action:manipulation;min-height:80px}
+.music-card::before{content:'';position:absolute;left:0;top:0;height:100%;width:4px;background:var(--primary-pink);transform:scaleY(0);transform-origin:top;transition:transform .4s ease}
+.music-card:active,.music-card.playing{background:var(--pale-pink);box-shadow:0 6px 16px rgba(214,51,132,.15)}
+.music-card.playing::before,.music-card:active::before{transform:scaleY(1)}
+.music-card.playing{border-color:rgba(214,51,132,.4)}
+@media(hover:hover){.music-card:hover{background:var(--pale-pink);transform:translateX(6px);box-shadow:0 6px 16px rgba(214,51,132,.15)}.music-card:hover::before{transform:scaleY(1)}}
+.music-play-btn{font-size:1.2rem;width:52px;height:52px;min-width:52px;display:flex;align-items:center;justify-content:center;background:var(--primary-pink);border-radius:50%;color:white;flex-shrink:0;transition:all .3s ease}
+.music-card.playing .music-play-btn{box-shadow:0 4px 14px rgba(214,51,132,.4)}
+.music-info{flex:1;min-width:0}
+.music-title{font-size:1rem;font-weight:600;color:var(--dark-gray);margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.music-artist{font-size:.85rem;color:var(--medium-gray);font-weight:400}
+.music-duration{font-size:.85rem;color:var(--medium-gray);font-weight:600;white-space:nowrap;flex-shrink:0}
+
+/* ── NOW PLAYING ── */
+.now-playing-card{display:none;align-items:center;gap:1.25rem;padding:1.25rem 1.5rem;margin-bottom:1.5rem;background:linear-gradient(135deg,var(--pale-pink),var(--white));border-radius:16px;border:2px solid rgba(214,51,132,.3);box-shadow:0 6px 24px rgba(214,51,132,.15);animation:fadeIn .4s ease}
+.now-playing-card.visible{display:flex}
+.now-playing-art{width:70px;height:70px;min-width:70px;border-radius:10px;background:linear-gradient(135deg,var(--light-pink),var(--pale-pink));flex-shrink:0;font-size:2rem;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px solid rgba(214,51,132,.2)}
+.now-playing-art img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.now-playing-info{flex:1;min-width:0}
+.now-playing-label{font-size:.7rem;font-weight:600;color:var(--primary-pink);letter-spacing:2px;text-transform:uppercase;margin-bottom:.2rem}
+.now-playing-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--dark-gray);margin-bottom:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-playing-artist{font-size:.85rem;color:var(--medium-gray)}
+.equalizer{display:flex;align-items:flex-end;gap:3px;height:18px;margin-top:.4rem}
+.equalizer span{width:4px;background:var(--primary-pink);border-radius:2px;animation:eq .8s ease-in-out infinite}
+.equalizer span:nth-child(1){height:7px;animation-delay:0s}
+.equalizer span:nth-child(2){height:14px;animation-delay:.2s}
+.equalizer span:nth-child(3){height:10px;animation-delay:.4s}
+.equalizer span:nth-child(4){height:18px;animation-delay:.1s}
+.equalizer span:nth-child(5){height:9px;animation-delay:.3s}
+@keyframes eq{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.now-playing-controls{flex-shrink:0}
+.now-playing-stop{width:42px;height:42px;border-radius:50%;background:var(--primary-pink);border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;touch-action:manipulation}
+.now-playing-stop:active{background:var(--accent-dark);transform:scale(.92)}
+
+/* ── LETTER ── */
+.letter-container{max-width:680px;margin:0 auto}
+.lock-section{text-align:center;padding:3rem 1.5rem;background:var(--light-gray);border-radius:12px;border:2px dashed rgba(214,51,132,.3)}
+.lock-icon{font-size:3.5rem;margin-bottom:1.5rem}
+.lock-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--dark-gray);margin-bottom:.75rem}
+.lock-description{color:var(--medium-gray);margin-bottom:1.75rem;font-size:.95rem}
+.password-field{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.password-input{flex:1;min-width:140px;padding:.9rem 1rem;border:2px solid rgba(214,51,132,.3);border-radius:8px;font-size:1rem;font-family:'Inter',sans-serif;transition:all .3s ease;-webkit-appearance:none}
+.password-input:focus{outline:none;border-color:var(--primary-pink);box-shadow:0 0 0 3px rgba(214,51,132,.1)}
+.unlock-button{padding:.9rem 1.75rem;background:var(--primary-pink);color:white;border:none;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:600;transition:all .3s ease;font-family:'Inter',sans-serif;touch-action:manipulation;white-space:nowrap;-webkit-appearance:none}
+.unlock-button:active{background:var(--accent-dark);transform:scale(.97)}
+.letter-content{background:linear-gradient(135deg,var(--pale-pink) 0%,var(--light-gray) 100%);padding:2.5rem 2rem;border-radius:12px;font-family:'Playfair Display',serif;font-size:1.05rem;line-height:2;color:var(--dark-gray);border:1px solid rgba(214,51,132,.2);box-shadow:0 8px 30px rgba(214,51,132,.1);white-space:pre-line}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:2000;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:1rem}
+.modal.show{display:flex}
+.modal-content{background:white;border-radius:16px;padding:1.75rem;max-width:420px;width:100%;position:relative;animation:modalSlide .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+@keyframes modalSlide{from{transform:scale(.85) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-close{position:absolute;top:1.25rem;right:1.25rem;background:transparent;border:none;font-size:1.4rem;color:var(--medium-gray);cursor:pointer;transition:color .3s;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.modal-close:active{color:var(--primary-pink)}
+.modal-image{width:100%;max-height:60vw;object-fit:cover;border-radius:10px;margin:1rem 0;display:none}
+.modal-image.loaded{display:block}
+.modal-emoji{font-size:5rem;text-align:center;margin:1.5rem 0}
+.modal-label{text-align:center;color:var(--dark-gray);font-weight:600;font-size:1rem}
+
+/* ── FOOTER ── */
+footer{background:var(--dark-gray);color:var(--white);text-align:center;padding:2.5rem 1.5rem;margin-top:5rem;border-top:1px solid rgba(214,51,132,.3)}
+footer p{margin:0;font-weight:300;font-size:.9rem;line-height:1.6}
+
+/* ── PHONE ── */
+@media(max-width:600px){
+  nav{padding:.75rem 0}
+  .nav-logo{font-size:1rem}
+  .nav-links a{font-size:.8rem}
+  .nav-links{gap:1rem}
+  .hero{margin-top:56px;min-height:calc(100vh - 56px);padding:2.5rem 1.25rem}
+  .hero-heart{font-size:3rem}
+  .tabs-container{gap:.6rem;margin:2.5rem 0 2rem}
+  .tab-button{padding:.6rem 1rem;font-size:.82rem}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:.75rem}
+  .music-card{padding:1rem}
+  .music-play-btn{width:46px;height:46px;min-width:46px;font-size:1rem}
+  .music-title{font-size:.95rem}
+  .now-playing-card{flex-wrap:nowrap;padding:1rem 1.1rem;gap:1rem}
+  .now-playing-art{width:56px;height:56px;min-width:56px}
+  .now-playing-title{font-size:1rem}
+  .letter-content{padding:1.75rem 1.25rem;font-size:.95rem}
+  .lock-section{padding:2.5rem 1.25rem}
+  .password-field{flex-direction:column}
+  .password-input,.unlock-button{width:100%}
+  .modal-content{padding:1.5rem}
+  .modal-emoji{font-size:4rem}
+}
+
+@media(max-width:380px){
+  .nav-links a{font-size:.75rem}
+  .nav-links{gap:.75rem}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:.6rem}
+  .tab-button{padding:.55rem .9rem;font-size:.8rem}
+}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-logo">✨ FOR YOU</div>
+    <ul class="nav-links">
+      <li><a href="#gallery" onclick="switchTab('gallery',event)">📷 Gallery</a></li>
+      <li><a href="#music"   onclick="switchTab('music',event)">🎵 Music</a></li>
+      <li><a href="#letter"  onclick="switchTab('letter',event)">💌 Letter</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-heart">💕</div>
+  <h1>For You, Zam</h1>
+  <p>A collection of moments, melodies, and memories that celebrate what we share</p>
+  <div class="scroll-indicator">↓</div>
+</section>
+
+<div class="container">
+  <div class="tabs-container">
+    <button class="tab-button active" onclick="switchTab('gallery',event)">📷 Gallery</button>
+    <button class="tab-button"        onclick="switchTab('music',event)">🎵 Music</button>
+    <button class="tab-button"        onclick="switchTab('letter',event)">💌 Letter</button>
+  </div>
+
+  <!-- Gallery -->
+  <section id="gallery" class="content-section active">
+    <h2 class="section-title">Our Memories together zam</h2>
+    <p class="section-subtitle">Moments that mean everything to us</p>
+    <div class="gallery-grid" id="galleryContainer"></div>
+  </section>
+
+  <!-- Music -->
+  <section id="music" class="content-section">
+    <h2 class="section-title">Our Playlist</h2>
+    <p class="section-subtitle">Songs that tell our story</p>
+    <div class="now-playing-card" id="nowPlayingCard">
+      <div class="now-playing-art" id="nowPlayingArt">🎵</div>
+      <div class="now-playing-info">
+        <div class="now-playing-label">Now Playing</div>
+        <div class="now-playing-title"  id="nowPlayingTitle">—</div>
+        <div class="now-playing-artist" id="nowPlayingArtist">—</div>
+        <div class="equalizer" style="margin-top:.35rem">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="now-playing-controls">
+        <button class="now-playing-stop" onclick="stopTrack()" title="Stop">■</button>
+      </div>
+    </div>
+    <div class="music-grid" id="musicContainer"></div>
+  </section>
+
+  <!-- Letter -->
+  <section id="letter" class="content-section">
+    <h2 class="section-title">A Quotation</h2>
+    <p class="section-subtitle"> from say</p>
+    <div class="letter-container" id="letterContainer"></div>
+  </section>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img  class="modal-image" id="modalImage" alt="">
+    <div  class="modal-emoji" id="modalEmoji"></div>
+    <p    class="modal-label" id="modalLabel"></p>
+  </div>
+</div>
+
+<footer>
+  <p>Made with love and care by Saisai labchuu both ♡</p>
+</footer>
+
+<audio id="backgroundMusic" loop style="display:none">
+  <source src="when i meet you.mp3" type="audio/mpeg">
+</audio>
+<audio id="trackMusic" style="display:none"></audio>
+
+<script>
+/* ── DATA ── */
+const galleryData = [
+  { id:1, alt:'First Dance',      emoji:'💃', image:'1.jpg' },
+  { id:2, alt:'Sunset Moment',    emoji:'🌅', image:'2.jpg' },
+  { id:3, alt:'Laughter and Joy', emoji:'😊', image:'3.jpg' },
+  { id:4, alt:'Hand in Hand',     emoji:'🤝', image:'4.jpg' },
+  { id:5, alt:'Starry Night',     emoji:'⭐', image:'5.jpg' },
+  { id:6, alt:'Forever Together', emoji:'💑', image:'6.jpg' },
+  { id:7, alt:'Forever Together', emoji:'💑', image:'7.jpg' },
+  { id:8, alt:'Forever Together', emoji:'💑', image:'8.jpg' },
+];
+
+const musicData = [
+  { id:1, title:'Yours',  artist:'Special Moments', duration:'3:45', url:'yours.mp3',  image:'yours.jpg',  emoji:'💛' },
+  { id:2, title:'Palagi', artist:'Love Notes',       duration:'4:12', url:'palagi.mp3', image:'palagi.jpg', emoji:'🌸' },
+  { id:3, title:'14',     artist:'Eternal Feelings', duration:'3:58', url:'14.mp3',     image:'14.jpg',     emoji:'🌙' },
+];
+
+const letterText = `"Dito lang, palagi\nSayo lang, mananatili\nIkaw ang pipiliin sa araw-araw\nIkaw lang, mahal\nTayo hanggang dulo"`;
+
+let isLetterUnlocked = false;
+let currentTrackId   = null;
+
+/* ── GALLERY ── */
+function initGallery() {
+  const c = document.getElementById('galleryContainer');
+  c.innerHTML = '';
+  galleryData.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    // Try image first, fallback to emoji
+    const img = new Image();
+    img.onload = () => {
+      div.style.backgroundImage    = `url('${item.image}')`;
+      div.style.backgroundSize     = 'cover';
+      div.style.backgroundPosition = 'center';
+      div.style.fontSize           = '0';
+    };
+    img.onerror = () => {
+      div.innerHTML   = item.emoji;
+      div.style.fontSize = '3rem';
+    };
+    img.src = item.image;
+    div.innerHTML = item.emoji; // show emoji while loading
+    div.onclick = () => openModal(item);
+    c.appendChild(div);
+  });
+}
+
+/* ── MUSIC ── */
+function initMusic() {
+  const c = document.getElementById('musicContainer');
+  c.innerHTML = '';
+  musicData.forEach(track => {
+    const div = document.createElement('div');
+    div.className = 'music-card';
+    div.id = 'card-' + track.id;
+    div.innerHTML = `
+      <div class="music-play-btn" id="playbtn-${track.id}">▶</div>
+      <div class="music-info">
+        <div class="music-title">${track.title}</div>
+        <div class="music-artist">${track.artist}</div>
+      </div>
+      <div class="music-duration">${track.duration}</div>`;
+    div.onclick = () => playTrack(track);
+    c.appendChild(div);
+  });
+}
+
+function playTrack(track) {
+  const bg   = document.getElementById('backgroundMusic');
+  const tm   = document.getElementById('trackMusic');
+  const card = document.getElementById('nowPlayingCard');
+
+  if (currentTrackId === track.id && !tm.paused) {
+    tm.pause();
+    document.getElementById('playbtn-' + track.id).textContent = '▶';
+    document.getElementById('card-'    + track.id).classList.remove('playing');
+    return;
+  }
+
+  document.querySelectorAll('.music-card').forEach(c => c.classList.remove('playing'));
+  document.querySelectorAll('[id^="playbtn-"]').forEach(b => b.textContent = '▶');
+
+  bg.pause();
+  tm.src = track.url;
+  currentTrackId = track.id;
+
+  document.getElementById('nowPlayingTitle').textContent  = track.title;
+  document.getElementById('nowPlayingArtist').textContent = track.artist;
+
+  const artEl = document.getElementById('nowPlayingArt');
+  artEl.innerHTML     = track.emoji || '🎵';
+  artEl.style.fontSize = '2rem';
+  const img = new Image();
+  img.onload = () => {
+    artEl.innerHTML = '';
+    artEl.style.fontSize = '';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:8px';
+    artEl.appendChild(img);
+  };
+  img.src = track.image;
+
+  card.classList.add('visible');
+  tm.play().catch(() => {});
+  document.getElementById('card-'    + track.id).classList.add('playing');
+  document.getElementById('playbtn-' + track.id).textContent = '⏸';
+
+  tm.onended = () => {
+    document.getElementById('playbtn-' + track.id).textContent = '▶';
+    document.getElementById('card-'    + track.id).classList.remove('playing');
+    card.classList.remove('visible');
+    currentTrackId = null;
+    bg.play().catch(() => {});
+  };
+}
+
+function stopTrack() {
+  const bg   = document.getElementById('backgroundMusic');
+  const tm   = document.getElementById('trackMusic');
+  const card = document.getElementById('nowPlayingCard');
+  tm.pause();
+  tm.currentTime = 0;
+  document.querySelectorAll('.music-card').forEach(c => c.classList.remove('playing'));
+  document.querySelectorAll('[id^="playbtn-"]').forEach(b => b.textContent = '▶');
+  card.classList.remove('visible');
+  currentTrackId = null;
+  bg.play().catch(() => {});
+}
+
+/* ── LETTER ── */
+function initLetter() {
+  const c = document.getElementById('letterContainer');
+  c.innerHTML = `
+    <div class="lock-section">
+      <div class="lock-icon">🔐</div>
+      <h3 class="lock-title">This message is private</h3>
+      <p class="lock-description">Enter the password to reveal my feelings for you</p>
+      <div class="password-field">
+        <input type="password" id="passwordInput" class="password-input" placeholder="Enter password…" autocomplete="off"/>
+        <button class="unlock-button" onclick="unlockLetter()">Unlock</button>
+      </div>
+    </div>`;
+  document.getElementById('passwordInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') unlockLetter();
+  });
+}
+
+function unlockLetter() {
+  const input = document.getElementById('passwordInput');
+  if (input.value === '012823') {
+    isLetterUnlocked = true;
+    document.getElementById('letterContainer').innerHTML =
+      `<div class="letter-content">${letterText}</div>`;
+  } else {
+    alert('Incorrect password. Please try again.');
+    input.value = '';
+    input.focus();
+  }
+}
+
+/* ── TABS ── */
+function switchTab(tabName, e) {
+  if (e) e.preventDefault();
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabName).classList.add('active');
+  const idx = ['gallery','music','letter'].indexOf(tabName);
+  if (idx > -1) document.querySelectorAll('.tab-button')[idx].classList.add('active');
+  if (tabName !== 'letter') { isLetterUnlocked = false; initLetter(); }
+  if (tabName !== 'music')  stopTrack();
+  setTimeout(() => {
+    document.querySelector('.tabs-container').scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 80);
+}
+
+/* ── MODAL ── */
+function openModal(item) {
+  const modalImg   = document.getElementById('modalImage');
+  const modalEmoji = document.getElementById('modalEmoji');
+  const modalLabel = document.getElementById('modalLabel');
+
+  modalLabel.textContent = item.alt;
+  modalImg.classList.remove('loaded');
+  modalEmoji.textContent = item.emoji;
+
+  // Try to show full image in modal
+  const testImg = new Image();
+  testImg.onload = () => {
+    modalImg.src = item.image;
+    modalImg.alt = item.alt;
+    modalImg.classList.add('loaded');
+    modalEmoji.textContent = '';
+  };
+  testImg.onerror = () => {
+    modalEmoji.textContent = item.emoji;
+  };
+  testImg.src = item.image;
+
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ── INIT ── */
+window.addEventListener('load', () => {
+  initGallery();
+  initMusic();
+  initLetter();
+  const bg = document.getElementById('backgroundMusic');
+  bg.volume = 0.3;
+  bg.play().catch(() => {
+    document.addEventListener('click', () => { if (bg.paused) bg.play(); }, { once:true });
+  });
+});
+</script>
+</body>
+</html>
